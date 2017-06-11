@@ -17,21 +17,16 @@ fi
 
 # Make sure we’re using the latest Homebrew.
 brew update
-
-# Install data stores
-brew install mariadb
-# brew install mysql
-brew install postgresql
-brew install mongo
-brew install redis
-brew install elasticsearch
-brew install sqlite
-
-# Install mysql workbench
-# Install Cask
 brew install caskroom/cask/brew-cask
-brew cask install --appdir="/Applications" sequel-pro
-# brew cask install --appdir="/Applications" mysqlworkbench
+
+brew tap caskroom/drivers
+brew cask install wacom-intuos-tablet
+brew cask install wacom-bamboo-tablet
+
+brew cask install --appdir="/Applications" adobe-photoshop-cs6
+brew cask install --appdir="/Applications" blender
+brew cask install --appdir="/Applications" sketchup
+brew cask install --appdir="/Applications" clip-studio-paint
 
 # Remove outdated versions from the cellar.
 brew cleanup

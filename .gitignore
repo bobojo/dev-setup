@@ -25,3 +25,19 @@ Thumbs.db
 
 # Repo scratch directory
 scratch/
+
+# Patch/diff artifacts.
+*.patch
+*.diff
+*.orig
+*.rej
+interdiff*.txt
+
+# Windows links.
+*.lnk
+
+# Temporary files.
+tmp*
+
+# Sublime Text files.
+*.sublime-*

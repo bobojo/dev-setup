@@ -32,6 +32,7 @@ brew install moreutils
 brew install findutils
 # Install GNU `sed`, overwriting the built-in `sed`.
 brew install gnu-sed --with-default-names
+# We'll be using Zsh instead of Bash, but install Bash as a backup
 # Install Bash 4.
 brew install bash
 brew tap homebrew/versions
@@ -40,8 +41,18 @@ brew install bash-completion2
 echo "Adding the newly installed shell to the list of allowed shells"
 # Prompts for password
 sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+# Install Zsh and Oh-My-Zsh
+brew install zsh
+brew install zsh-completions
+rm -f ~/.zcompdump; compinit
+chmod go-w /usr/local/share
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# We installed the new shell, now we have to activate it
+echo "Adding the newly installed shell to the list of allowed shells"
+# Prompts for password
+sudo bash -c 'echo /usr/local/bin/zsh >> /etc/shells'
 # Change to the new shell, prompts for password
-chsh -s /usr/local/bin/bash
+chsh -s /usr/local/bin/zsh
 
 # Install `wget` with IRI support.
 brew install wget --with-iri
@@ -49,8 +60,8 @@ brew install wget --with-iri
 # Install RingoJS and Narwhal.
 # Note that the order in which these are installed is important;
 # see http://git.io/brew-narwhal-ringo.
-brew install ringojs
-brew install narwhal
+# brew install ringojs
+# brew install narwhal
 
 # Install Python
 brew install python
@@ -67,7 +78,6 @@ brew install vim --override-system-vi
 brew install homebrew/dupes/grep
 brew install homebrew/dupes/openssh
 brew install homebrew/dupes/screen
-brew install homebrew/php/php55 --with-gmp
 
 # Install font tools.
 brew tap bramstein/webfonttools
@@ -133,8 +143,8 @@ brew link libxml2 --force
 brew link libxslt --force
 
 # Install Heroku
-brew install heroku-toolbelt
-heroku update
+# brew install heroku-toolbelt
+# heroku update
 
 # Install Cask
 brew install caskroom/cask/brew-cask
@@ -151,7 +161,15 @@ brew cask install --appdir="/Applications" sublime-text
 brew cask install --appdir="/Applications" atom
 brew cask install --appdir="/Applications" virtualbox
 brew cask install --appdir="/Applications" vagrant
+brew cask install --appdir="/Applications" vagrant-manager
 brew cask install --appdir="/Applications" macdown
+brew cask install --appdir="/Applications" phpstorm
+brew cask install --appdir="/Applications" cyberduck
+brew cask install --appdir="/Applications" postman
+# Setup Sublime Text 3 settings sync
+cd ~/Library/Application\ Support/Sublime\ Text\ 3/Packages/
+rm -r User
+ln -s ~/Dropbox/Personal/Passwords,\ Keys,\ etc./User
 
 # Misc casks
 brew cask install --appdir="/Applications" google-chrome
@@ -159,13 +177,32 @@ brew cask install --appdir="/Applications" firefox
 brew cask install --appdir="/Applications" skype
 brew cask install --appdir="/Applications" slack
 brew cask install --appdir="/Applications" dropbox
-brew cask install --appdir="/Applications" evernote
-brew cask install --appdir="/Applications" 1password
+# brew cask install --appdir="/Applications" evernote
+# brew cask install --appdir="/Applications" 1password
 #brew cask install --appdir="/Applications" gimp
 #brew cask install --appdir="/Applications" inkscape
+brew update && brew cask uninstall --force adobe-reader && brew cask install --appdir="/Applications" adobe-reader
+brew cask install --appdir="/Applications" lastpass
+# Alternative to above with Alfred Power Pack subscription (see https://github.com/stuartcryan/lastpass-alfred-workflow)
+# brew install lastpass-cli --with-pinentry --with-doc
+# sudo cpan install Capture::Tiny
+# git clone git@github.com:stuartcryan/lastpass-alfred-workflow.git
+# open lastpass-alfred-workflow/lastpass-cli-alfred-workflow.alfredworkflow
+brew cask install --appdir="/Applications" bettertouchtool
+brew cask install --appdir="/Applications" flux
+brew cask install --appdir="/Applications" slate
+brew cask install --appdir="/Applications" hyperswitch
+brew cask install --appdir="/Applications" little-snitch
+brew cask install --appdir="/Applications" the-unarchiver
+brew cask install --appdir="/Applications" microsoft-office
+brew cask install --appdir="/Applications" disk-inventory-x
+brew cask install --appdir="/Applications" joinme
 
 #Remove comment to install LaTeX distribution MacTeX
-#brew cask install --appdir="/Applications" mactex
+brew cask install --appdir="/Applications" mactex
+
+brew tap caskroom/drivers
+brew cask install brotherprinterdrivers
 
 # Install Docker, which requires virtualbox
 brew install docker
@@ -173,6 +210,17 @@ brew install boot2docker
 
 # Install developer friendly quick look plugins; see https://github.com/sindresorhus/quick-look-plugins
 brew cask install qlcolorcode qlstephen qlmarkdown quicklook-json qlprettypatch quicklook-csv betterzipql qlimagesize webpquicklook suspicious-package
+
+# Install Wine to run Windows programs
+brew install wine
+
+# Install personal-use applications
+brew cask install --appdir="/Applications" crashplan
+brew cask install --appdir="/Applications" resilio-sync
+brew cask install --appdir="/Applications" macid
+brew cask install --appdir="/Applications" rescuetime
+brew cask install --appdir="/Applications" fuzzyclock
+brew cask install --appdir="/Applications" keycastr
 
 # Remove outdated versions from the cellar.
 brew cleanup

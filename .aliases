@@ -139,3 +139,219 @@ alias afk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resource
 
 # Reload the shell (i.e. invoke as a login shell)
 alias reload="exec $SHELL -l"
+
+
+
+#
+# Aliases and functions stolen from Wes Curtis (https://github.com/wtcurtis/dotfiles)
+#
+
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+
+# some more ls aliases
+alias ll='ls -alF'
+alias l='ls -alF'
+
+alias tmux="TERM=screen-256color tmux"
+
+alias ten="tail -f /usr/local/var/log/nginx/error.log";
+alias ven="vim /usr/local/var/log/nginx/error.log";
+alias tep="tail -f /usr/local/var/log/php70-error.log";
+alias vep="vim /usr/local/var/log/php70-error.log";
+
+#nuclear options for permissions
+function perm {
+    sudo chmod -R 775 `pwd`
+    sudo chgrp -R `id -u -n` `pwd`
+    sudo chown -R $1 `pwd`
+}
+
+function ifind {
+    find $1 -iname $2
+}
+
+function pfind {
+    find $1 -iname '*.php'
+}
+
+#put file on local clipboard
+alias cb='xclip -selection c -i'
+alias cbm='pbcopy';
+
+#bind Ctrl-W to erase word up to slash
+stty werase undef
+bind 'C-w:unix-filename-rubout'
+
+PROMPT_COMMAND='history -a'
+
+alias gs="git status"
+alias gsh="git show"
+alias gshs="git show --stat"
+alias gl="git log"
+alias gln="git log --no-merges"
+alias ga="git add"
+alias gap="git add -p"
+alias gc="git commit -v"
+alias gca="git commit --amend"
+alias gd="git diff"
+alias gds="git diff --stat"
+alias gco="git checkout"
+alias gcod="git checkout dev"
+alias gpo="git push origin"
+alias gpl="git push local"
+alias gpob="git push origin \`parse_git_branch\`"
+alias gpu="git pull origin"
+alias gpr="git pull --rebase origin"
+alias gprb="git pull --rebase origin \`parse_git_branch\`"
+alias gprd="git pull --rebase origin dev"
+alias gprbf="git pull --rebase origin \`parse_git_branch\` && git fetch --tags"
+alias gprdf="git pull --rebase origin \`parse_git_branch\` && git fetch --tags"
+alias gf="git fetch"
+alias gt="git tag -a"
+alias gtd="git tag -d"
+alias gtdr="git push origin :"
+alias gst="git stash"
+alias gsts="git stash show"
+alias gstsp="git stash show --patch"
+alias gstp="git stash pop"
+alias gsl="git stash list"
+alias gft="git fetch --tags"
+alias gfa="git fetch --all"
+alias gshf="git show --stat --name-only --pretty=\"format:\""
+
+alias gau="git update-index --assume-unchanged"
+alias gac="git update-index --no-assume-unchanged"
+
+#git-svn aliases (hope to god I never have to use these again)
+alias gnr="git svn rebase"
+alias gnd="git svn dcommit"
+alias gndr="git svn dcommit --dry-run"
+alias gn="git svn"
+alias gcp="git cherry-pick"
+
+function svnClone {
+    git svn clone $1 -T trunk -b branches -t tags
+}
+
+function svnBranches {
+    git branch trunk refs/remotes/origin/trunk
+    git branch staging refs/remotes/origin/staging
+    git branch production refs/remotes/origin/production
+}
+
+# Set terminal title
+function title {
+    echo -ne "\033]0;$1\007"
+}
+
+NGINXBASE="/usr/local/etc/nginx"
+alias sa="cd $NGINXBASE/sites-available && sudo vim && cd -"
+alias se="cd $NGINXBASE/sites-enabled && sudo vim && cd -"
+
+function ngensite() {
+    toSymlink=$NGINXBASE/sites-enabled/$1.conf
+
+    if [ -e $NGINXBASE/sites-available/$1.conf ]; then
+        ln -s $NGINXBASE/sites-available/$1.conf $toSymlink
+    else
+        echo "$toSymlink already exists."
+    fi
+}
+
+function ngdissite() {
+    toDelete=$NGINXBASE/sites-enabled/$1.conf
+
+    if [ -e $NGINXBASE/sites-available/$1.conf ]; then
+        rm $toDelete
+    else
+        echo "No such sites: $toDelete"
+    fi
+}
+
+alias nglist="ls -la $NGINXBASE/sites-enabled"
+alias nglista="ls -la $NGINXBASE/sites-available"
+alias ns="sudo brew services start nginx"
+alias nr="sudo brew services restart nginx"
+alias nx="sudo brew services stop nginx"
+# alias as="sudo apachectl start"
+# alias ar="sudo apachectl reload"
+# alias ax="sudo apachectl stop"
+
+alias fc="find . -name '*.cs' | xargs grep 2>/dev/null --color"
+alias fci="find . -name '*.cs' | xargs grep 2>/dev/null --color -i"
+alias fp="find . -name '*.php' | xargs grep 2>/dev/null --color"
+alias fpi="find . -name '*.php' | xargs grep 2>/dev/null --color -i"
+alias fj="find . -name '*.js' | xargs grep 2>/dev/null --color"
+alias fji="find . -name '*js' | xargs grep 2>/dev/null --color -i"
+alias fx="find . -name '*.xml' | xargs grep 2>/dev/null --color"
+alias fxi="find . -name '*.xml' | xargs grep 2>/dev/null --color -i"
+alias fph="find . -name '*.phtml' | xargs grep 2>/dev/null --color"
+alias fphi="find . -name '*.phtml' | xargs grep 2>/dev/null --color -i"
+alias fa="find . -type f | xargs grep 2>/dev/null --color"
+alias fai="find . -type f | xargs grep 2>/dev/null --color -i"
+alias fn="find . -name"
+alias ff="find . -type f"
+
+function fz {
+    find . -iname "*$1*"
+}
+
+function fzf {
+    find . -type f -iname "*$1*"
+}
+
+
+alias xg="xargs grep"
+alias xgi="xargs grep -i"
+
+#up 5 => go up 5 directories
+function up {
+    for i in $(seq 1 $1); do cd ..; done
+}
+
+function tagn {
+    git tag -a `tn $1` -m \'${*:2}\'
+    ts $1
+}
+
+alias web="cd $WEBROOT"
+alias cms="cd $CMSROOT"
+alias apa="cd /etc/apache2"
+alias acnf="sudo vim /etc/apache2/httpd.conf"
+alias rapa="sudo apachectl restart"
+alias php7="brew services stop php53 && brew services start php70"
+alias php53="brew services stop php70 && brew services start php53"
+
+alias php7conf="cd /usr/local/etc/php/7.0 && sudo vim && cd -"
+alias php53conf="cd /usr/local/etc/php/5.3 && sudo vim && cd -"
+
+alias bs="brew services"
+alias bsr="brew services restart"
+alias bss="brew services start"
+alias bsx="brew services stop"
+alias sbs="sudo brew services"
+
+#completely annihilate phpstorm
+alias kill_storm="ps aux | grep phpstorm | grep -v grep | tr -s ' ' | cut -d ' ' -f 2 | xargs kill -9"
+# alias phpstorm="~/phpstorm/current.sh"
+
+alias vimhuge="vim -u \"NONE\""
+
+[ -s "/home/wcurtis/.dnx/dnvm/dnvm.sh" ] && . "/home/wcurtis/.dnx/dnvm/dnvm.sh" # Load dnvm
+
+alias branchDate="for k in \`git branch|perl -pe s/^..//\`;do echo -e \`git show --pretty=format:'%Cgreen%ci %Cblue%cr%Creset' $k|head -n 1\`\\t$k;done|sort -r"
+
+MAPI_UNIT="$MAPIDIR/phpunit.xml"
+PHPX="php -c /usr/local/etc/php/7.0/php-cli-xdebug.ini"
+
+alias phpx="$PHPX"
+alias pu="phpunit"
+alias pux="$PHPX vendor/bin/phpunit"
+
+alias hosts="sudo vim /etc/hosts"
+alias nowutc="echo \"<?php echo (new DateTime('now', new DateTimeZone('UTC')))->format('Y-m-d H:i:s') . PHP_EOL;\" | php"
+
+function phpunitIndependent {
+    for i in $(find tests -name '*Test.php'); do vendor/bin/phpunit --stop-on-failure $i || exit 255; done
+}
